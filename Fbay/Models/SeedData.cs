@@ -23,6 +23,8 @@ namespace Fbay.Migrations
                     return;
                 }
 
+
+                //Example listings
                 context.Listings.AddRange(
 
                     new Listings

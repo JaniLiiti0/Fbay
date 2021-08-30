@@ -193,52 +193,6 @@ namespace Fbay.Controllers
             return View(dynamicmodel);
         }
 
-        /*[HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Buy(int? id, int boughtAmount)
-        {
-            return RedirectToAction("AddToCart", "Cart");
-        }
-        public async Task<IActionResult> Buy(int id, int boughtAmount)
-        {
-            var listing = await _context.Listings.FindAsync(id);
-            if (ModelState.IsValid)
-            {
-
-                try
-                {
-                    //Making sure an item can't be sold more than there is stock
-                    //Replace with a system that verifies without leaving the page?
-                    if ((listing.Amount - boughtAmount) >= 0)
-                        listing.Amount -= boughtAmount;
-                    else
-                        return BadRequest(new { Message = "Not enough stock" });
-                    _context.Update(listing);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ListingExists(listing.Listing_id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                //After transaction, if there is no stock left, delete listing
-                //Possibly have an "old listings" page for a user's own posts where you can add stock
-                if (listing.Amount == 0)
-                { 
-                    _context.Listings.Remove(listing);
-                    await _context.SaveChangesAsync();
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(listing);
-        }*/
-
         // GET: Listings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
