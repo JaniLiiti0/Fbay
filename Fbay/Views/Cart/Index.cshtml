@@ -1,14 +1,15 @@
-﻿@model IEnumerable<Fbay.Models.Product>
+﻿@model Fbay.Models.Users
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Cart";
 }
 
 <h1>Cart</h1>
 
 <form asp-action="Checkout">
     <div class="form-group">
-        <input type="submit" value="Checkout" class="btn btn-primary" />
+        <select asp-for="Id" asp-items="@(new SelectList(ViewBag.users,"Id","FullInfo"))"></select>
+            <input type="submit" value="Checkout" class="btn btn-primary" />
     </div>
 </form>
 
@@ -22,6 +23,9 @@
                 Amount
             </th>
             <th>
+                Price
+            </th>
+            <th>
                 Image
             </th>
         </tr>
@@ -29,30 +33,33 @@
     <tbody>
         @foreach (var item in ViewBag.cart)
         {
-            <tr>
-                <td style="text-align:center">
-                    <b>
-                        <a asp-controller="Listings" asp-action="Details" asp-route-id="@item.Product_id" style="text-decoration: none; color: black">
-                            @item.Product_name
-                        </a>
-                    </b>
-                </td>
-                <td>
-                    @item.Amount
-                </td>
-                <td>
-                    <a asp-controller="Listings" asp-action="Details" asp-route-id="@item.Product_id">
-                        <img src="@Url.Content(@item.Image)" style="max-width:150px;width:100%;max-height:150px;height:100%" />
+        <tr>
+            <td style="text-align:center">
+                <b>
+                    <a asp-controller="Listings" asp-action="Details" asp-route-id="@item.Product_id" style="text-decoration: none; color: black">
+                        @item.Product_name
                     </a>
-                </td>
-                <td>
-                    <form asp-action="Remove" asp-route-id="@item.Product_id">
-                        <div class="form-group">
-                            <input type="submit" value="Remove" class="btn btn-primary" />
-                        </div>
-                    </form>
-                </td>
-            </tr>
+                </b>
+            </td>
+            <td>
+                @item.Amount
+            </td>
+            <td>
+                @(@item.Price*@item.Amount) € 
+            </td>
+            <td>
+                <a asp-controller="Listings" asp-action="Details" asp-route-id="@item.Product_id">
+                    <img src="@Url.Content(@item.Image)" style="max-width:150px;width:100%;max-height:150px;height:100%" />
+                </a>
+            </td>
+            <td>
+                <form asp-action="Remove" asp-route-id="@item.Product_id">
+                    <div class="form-group">
+                        <input type="submit" value="Remove" class="btn btn-primary" />
+                    </div>
+                </form>
+            </td>
+        </tr>
 
         }
     </tbody>

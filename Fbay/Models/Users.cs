@@ -24,5 +24,21 @@ namespace Fbay.Models
         [PersonalData]
         [Display(Name = "Last name")]
         public string Lname { get; set; }
+
+        [Required]
+        [PersonalData]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(8, 2)")]
+        public decimal Money { get; set; }
+
+        public string FullInfo
+        {
+            get
+            {
+                return Fname + " " + Lname + ": " + Money + " €";
+            }
+
+        }
     }
 }
+

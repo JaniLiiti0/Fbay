@@ -32,6 +32,12 @@ namespace Fbay.Controllers
             return View(await _context.Listings.ToListAsync());
         }
 
+        //Can be used to add stock to out of stock listings
+        public async Task<IActionResult> OldListings()
+        {
+            return View(await _context.Listings.ToListAsync());
+        }
+
         // GET: Listings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -68,7 +74,7 @@ namespace Fbay.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Listing_id,User_id,Item,Amount,Image")] Listings listing)
+        public async Task<IActionResult> Create([Bind("Listing_id,User_id,Item,Amount,Price,Image")] Listings listing)
         {
             if (ModelState.IsValid)
             {
@@ -128,7 +134,7 @@ namespace Fbay.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Listing_id,User_id,Item,Amount,Image")] Listings listing)
+        public async Task<IActionResult> Edit(int id, [Bind("Listing_id,User_id,Item,Amount,Price,Image")] Listings listing)
         {
             if (id != listing.Listing_id)
             {
@@ -152,6 +158,7 @@ namespace Fbay.Controllers
                     {
                         //Inserted image wasn't valid, default image will be used
                         listing.Image = defaultImage;
+
                     }
                     _context.Update(listing);
                     await _context.SaveChangesAsync();

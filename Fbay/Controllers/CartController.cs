@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Fbay.Models;
 using Fbay.Helpers;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Fbay.Controllers
 {
@@ -27,7 +28,7 @@ namespace Fbay.Controllers
             return _context.Listings.Any(e => e.Listing_id == id);
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var cart = SessionHelper.GetObjectFromJson<List<Product>>(HttpContext.Session, "cart");
             if (cart == null)
@@ -36,8 +37,13 @@ namespace Fbay.Controllers
                 SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
             }
             ViewBag.cart = cart;
+
+            var users = await _context.Users.ToListAsync();
+            ViewBag.users = users;
+
             return View();
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -78,6 +84,7 @@ namespace Fbay.Controllers
                     Product p = new Product();
                     p.Product_id = listing.Listing_id;
                     p.Amount = boughtAmount;
+                    p.Price = listing.Price;
                     p.Product_name = listing.Item;
                     p.Image = listing.Image;
                     cart.Add(p);
@@ -101,6 +108,7 @@ namespace Fbay.Controllers
                         Product p = new Product();
                         p.Product_id = listing.Listing_id;
                         p.Amount = boughtAmount;
+                        p.Price = listing.Price;
                         p.Product_name = listing.Item;
                         p.Image = listing.Image;
                         cart.Add(p);
@@ -137,26 +145,50 @@ namespace Fbay.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Checkout()
+        public async Task<IActionResult> Checkout(int id)
         {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
             List<Product> cart = SessionHelper.GetObjectFromJson<List<Product>>(HttpContext.Session, "cart");
+
+            //Calculate the total price of all items in the cart
             int itemsInCart = cart.Count;
+            var cartTotal = 0m; ;
             for (int i = 0; i < itemsInCart; i++)
             {
-                var listing = await _context.Listings.FindAsync(cart[i].Product_id);
-                listing.InNumberOfCarts -= 1;
-                await _context.SaveChangesAsync();
-
-                //After transaction, if there is no stock left, delete listing
-                //Possibly have an "old listings" page for a user's own posts where you can add stock
-                if (listing.Amount == 0)
-                {
-                    _context.Listings.Remove(listing);
-                    await _context.SaveChangesAsync();
-                }
+                cartTotal += cart[i].Price * cart[i].Amount;
             }
-            cart.Clear();
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+
+            //Check whether the user has enough money
+            if (user.Money >= cartTotal)
+            {
+                Orders order = new Orders();
+                order.BuyerName = user.Fname + " " + user.Lname;
+                for (int i = 0; i < itemsInCart; i++)
+                {
+                    order.ItemNames += cart[i].Product_name + ", ";
+                    order.ItemAmounts += cart[i].Amount + ", ";
+                    order.ItemImages += cart[i].Image + ", ";
+                    order.TotalPrice = cartTotal;
+                    var listing = await _context.Listings.FindAsync(cart[i].Product_id);
+                    listing.InNumberOfCarts -= 1;
+
+                    //After transaction, if there is no stock left, delete listing
+                    //Possibly have an "old listings" page for a user's own posts where you can add stock
+                    if (listing.Amount == 0)
+                    {
+                        //_context.Listings.Remove(listing);
+                    }
+                }
+                user.Money -= cartTotal;
+                _context.Add(order);
+                await _context.SaveChangesAsync();
+                cart.Clear();
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+            }
+            else
+            {
+                return Content("Not enough money!");
+            }
             return RedirectToAction("Index");
         }
     }

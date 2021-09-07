@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Fbay.Models.Users>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Users";
 }
 
 <h1>Index</h1>
@@ -18,7 +18,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Lname)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Money)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -27,12 +29,17 @@
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none; color: black">
                     @Html.DisplayFor(modelItem => item.Fname)
-                    </a>
+                </a>
             </td>
             <td>
                 <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none; color: black">
                     @Html.DisplayFor(modelItem => item.Lname)
-                    </a>
+                </a>
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id" style="text-decoration: none; color: black">
+                    @Html.DisplayFor(modelItem => item.Money)
+                </a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -16,8 +16,10 @@ namespace Fbay.Data
 
         public DbSet<Fbay.Models.Listings> Listings { get; set; }
         public DbSet<Fbay.Models.Users> Users { get; set; }
+
+        public DbSet<Fbay.Models.Orders> Orders { get; set; }
         //public DbSet<Fbay.Models.Cart> Cart { get; set; }
-        
+
         //public DbSet<Fbay.Models.Product> Product { get; set; }
     }
 }

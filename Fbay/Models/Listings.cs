@@ -25,6 +25,10 @@ namespace Fbay.Models
         [Required]
         public int Amount { get; set; }
 
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(8, 2)")]
+        public decimal Price { get; set; }
+
         //Link to an image of the product
         //Using images from the internet is obviously a bad way to implement them, should be replaced with storage
         public string Image { get; set; }

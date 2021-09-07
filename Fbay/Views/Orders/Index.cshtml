@@ -1,0 +1,37 @@
+﻿@model IEnumerable<Fbay.Models.Orders>
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h1>Orders</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Buyer
+            </th>
+            <th>
+                Total price
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var items = item.ItemNames.TrimEnd(new Char[] { ' ', ',' });
+            <tr>
+                <td>
+                    <a style="text-decoration: none; color: black" asp-action="OrderDetailed" asp-route-id="@item.OrderId" >
+                        @Html.DisplayFor(modelItem => item.BuyerName)
+                    </a>
+                </td>
+                <td>
+                    <a style="text-decoration: none; color: black">
+                        @Html.DisplayFor(modelItem => item.TotalPrice) €
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

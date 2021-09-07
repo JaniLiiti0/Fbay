@@ -32,7 +32,8 @@ namespace Fbay.Migrations
                         Item = "Keyboard",
                         User_id = 1,
                         Amount = 12,
-                        Image = "https://www.logitechg.com/content/dam/gaming/en/products/pro-keyboard/pro-clicky-hero.png"
+                        Price = 79.99m,
+                        Image = "https://resource.logitechg.com/content/dam/gaming/en/products/pro-keyboard/pro-keyboard-gallery/us-int-pro-gaming-keyboard-gallery-topdown.png"
                     },
 
                      new Listings
@@ -40,6 +41,7 @@ namespace Fbay.Migrations
                          Item = "Monitor",
                          User_id = 2,
                          Amount = 120,
+                         Price = 250.50m,
                          Image = "https://images.samsung.com/is/image/samsung/p6pim/fi/lu28r550uqrxen/gallery/fi-ur55-312872-lu28r550uqrxen-450344623?$720_576_PNG$"
                      },
 
@@ -48,6 +50,7 @@ namespace Fbay.Migrations
                          Item = "Desk",
                          User_id = 3,
                          Amount = 3,
+                         Price = 150m,
                          Image = "https://cdn.moooi.com/tmp/image-thumbnails/Collection/Paper/Paper%20Desk/Paper%20Desk%20180/image-thumb__1846__height_500/Paper-Desk-180.png"
                      },
 
@@ -56,11 +59,11 @@ namespace Fbay.Migrations
                          Item = "PC",
                          User_id = 1,
                          Amount = 12,
+                         Price = 1399.00m,
                          Image = "https://www.gigantti.fi/image/dv_web_D180001002478661/193183/pcspecialist-tornado-r9-gaming-pc.jpg?$prod_all4one$"
                      }
                      );
                 context.SaveChanges();
-
             }
         }
     }
