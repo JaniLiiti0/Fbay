@@ -34,11 +34,16 @@ namespace Fbay.Controllers
             {
                 return NotFound();
             }
+
+            //Make lists of all the items, amounts and images
             string[] items = order.ItemNames.Split(", ", StringSplitOptions.RemoveEmptyEntries);
             string[] itemAmounts = order.ItemAmounts.Split(", ", StringSplitOptions.RemoveEmptyEntries);
             string[] itemImages = order.ItemImages.Split(", ", StringSplitOptions.RemoveEmptyEntries);
 
             dynamic dynamicmodel = new ExpandoObject();
+            dynamicmodel.OrderId = order.OrderId;
+            dynamicmodel.Buyer = order.BuyerName;
+            dynamicmodel.Price = order.TotalPrice;
             dynamicmodel.Order = order;
             dynamicmodel.Items = items;
             dynamicmodel.ItemAmounts = itemAmounts;

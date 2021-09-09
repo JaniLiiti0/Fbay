@@ -224,9 +224,16 @@ namespace Fbay.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var listing = await _context.Listings.FindAsync(id);
-            _context.Listings.Remove(listing);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (listing.InNumberOfCarts <= 0)
+            {
+                _context.Listings.Remove(listing);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return Content("Item is in a cart, can't be deleted.");
+            }
         }
 
         public bool ListingExists(int id)

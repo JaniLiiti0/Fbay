@@ -78,6 +78,7 @@ namespace Fbay.Controllers
                     }
                 }
                 
+                //If there is no cart yet, make one
                 if (SessionHelper.GetObjectFromJson<List<Product>>(HttpContext.Session, "cart") == null)
                 {
                     List<Product> cart = new List<Product>();
@@ -91,11 +92,14 @@ namespace Fbay.Controllers
                     SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
                     listing.InNumberOfCarts += 1;
                 }
+
+                //Add new items to existing cart
                 else
                 {
                     List<Product> cart = SessionHelper.GetObjectFromJson<List<Product>>(HttpContext.Session, "cart");
                     for (int i = 0; i < cart.Count; i++)
                     {
+                        //If the item is already in cart, just raise the amount
                         if (listing.Listing_id == cart[i].Product_id)
                         {
                             cart[i].Amount += boughtAmount;
@@ -103,6 +107,7 @@ namespace Fbay.Controllers
                             SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
                         }
                     }
+                    //Adding item to cart
                     if (!productAlreadyInCart)
                     {
                         Product p = new Product();
@@ -125,6 +130,7 @@ namespace Fbay.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Remove(int id)
         {
+            //Remove item from cart
             List<Product> cart = SessionHelper.GetObjectFromJson<List<Product>>(HttpContext.Session, "cart");
             for (int i = 0; i < cart.Count; i++)
             {
@@ -165,6 +171,7 @@ namespace Fbay.Controllers
                 order.BuyerName = user.Fname + " " + user.Lname;
                 for (int i = 0; i < itemsInCart; i++)
                 {
+                    //Make strings from items, amounts, images
                     order.ItemNames += cart[i].Product_name + ", ";
                     order.ItemAmounts += cart[i].Amount + ", ";
                     order.ItemImages += cart[i].Image + ", ";
