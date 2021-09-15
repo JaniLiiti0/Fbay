@@ -4,7 +4,16 @@
     ViewData["Title"] = "Cart";
 }
 
+
 <h1>Cart</h1>
+@{
+    var totalPrice = 0m;
+    foreach (var item in ViewBag.cart)
+    {
+        totalPrice += (item.Price * item.Amount);
+    }
+    <h2>Total Price: @totalPrice €</h2>
+}
 
 <form asp-action="Checkout">
     <div class="form-group">
