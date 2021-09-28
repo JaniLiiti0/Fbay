@@ -1,7 +1,7 @@
 # Fbay
-Marketplace using .NET Core MVC
+Marketplace using ASP.NET Core MVC
 
-This project is just my way of learning the basics of .NET Core MVC and is not meant to become an actual usable base for a marketplace.
+This project is just my way of learning the basics of ASP.NET Core MVC and is not meant to become an actual usable base for a marketplace.
 
 Front page shows purchasable items:  
 ![Screenshot](Images/listings.png)  
